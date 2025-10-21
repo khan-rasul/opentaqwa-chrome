@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "OpenTaqwā",
     "version": "0.0.1",
-    "description": "Islamic companion extension",
+    "description": "Companion for the Ummah",
     "author": "Rasul Khan",
     "permissions": [
         "sidePanel",

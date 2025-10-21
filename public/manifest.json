@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "OpenTaqwā",
+    "version": "0.0.1",
+    "description": "Islamic companion extension",
+    "author": "Rasul Khan",
+    "permissions": [
+        "sidePanel",
+        "geolocation",
+        "notifications"
+    ],
+    "host_permissions": [
+        "https://reminder.dev/*"
+    ],
+    "icons": {
+        "16": "icon.png",
+        "32": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "action": {
+        "default_title": "Open OpenTaqwā",
+        "default_icon": {
+            "16": "icon.png",
+            "32": "icon.png",
+            "48": "icon.png",
+            "128": "icon.png"
+        }
+    },
+    "side_panel": {
+        "default_path": "index.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    }
+}

@@ -1,0 +1,22 @@
+OpenTaqwā - Islamic Companion Extension
+Copyright (c) 2024 [Rasul Khan]
+
+This software contains components from third-party sources:
+
+- React (https://reactjs.org/) - MIT License
+- React DOM (https://reactjs.org/) - MIT License
+- Tailwind CSS (https://tailwindcss.com/) - MIT License
+- Lucide React (https://lucide.dev/) - ISC License
+- Axios (https://axios-http.com/) - MIT License
+
+Data and services provided by:
+
+- Aladhan API (https://api.aladhan.com/v1) - Free to use
+- Al Quran Cloud API (https://api.alquran.cloud/v1) - Free to use
+- Reminder.dev API (https://reminder.dev/api) - Free to use
+
+Geocoding services provided by:
+
+- OpenStreetMap Nominatim (https://nominatim.openstreetmap.org/) - Open Database License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.

@@ -1,0 +1,41 @@
+{
+  "name": "open-taqwa",
+  "private": true,
+  "version": "0.0.1",
+  "license": "CC-BY-NC-4.0",
+  "author": "Rasul Khan <rasulkhan.nits@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khan-rasul/open-taqwa.git"
+  },
+  "homepage": "https://github.com/khan-rasul/open-taqwa#readme",
+  "bugs": {
+    "url": "https://github.com/khan-rasul/open-taqwa/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.12",
+    "axios": "^1.11.0",
+    "lucide-react": "^0.542.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "vite": "^7.1.2"
+  }
+}

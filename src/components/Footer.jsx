@@ -12,8 +12,8 @@ import Tooltip from "./Tooltip";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const githubIssuesUrl =
-    "https://github.com/khan-rasul/opentaqwa-chrome/issues";
+  const githubUrl = "https://github.com/khan-rasul/opentaqwa-chrome";
+  const githubIssuesUrl = githubUrl.concat("/issues");
 
   return (
     <footer className="w-full bg-gradient-to-r from-slate-600/30 to-slate-700/20 rounded-xl shadow-lg border border-white/10 p-4 sm:p-5 md:p-6 relative overflow-hidden">
@@ -63,7 +63,7 @@ const Footer = () => {
 
             <Tooltip content="View on GitHub" position="bottom">
               <a
-                href="https://github.com/YOUR_USERNAME/opentaqwa" // Update with your GitHub repo
+                href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-center  hover:bg-white/20 border border-white/20 rounded-full p-2 sm:p-2.5 md:p-3 transition-all duration-300 hover:scale-110"

@@ -1,4 +1,4 @@
-# OpenTaqwā - Islamic Companion Extension
+# OpenTaqwā - Companion for the Ummah
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?style=for-the-badge)](https://github.com/khan-rasul/open-taqwa)

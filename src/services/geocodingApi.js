@@ -24,9 +24,6 @@ export const geocodingApi = {
           format: "json",
           addressdetails: 1,
         },
-        headers: {
-          "User-Agent": "Prayer-Times-App/1.0",
-        },
         timeout: 5000,
         signal: controller.signal,
       });

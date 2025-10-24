@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
-import { useState } from "react";
+import { use, useState } from "react";
 import { BookOpen, RefreshCw, Heart, Share2 } from "lucide-react";
 import { useDailyVerse } from "../hooks/useDailyVerse";
 import { useContentLength } from "../hooks/useContentLength";
@@ -31,11 +31,15 @@ const Verse = () => {
     shareContent("Quranic Verse", verse, formatters.verse);
   };
 
+  const handleRefresh = () => {
+    refreshVerse(false);
+  };
+
   // Loading state
   if (loading) {
     return (
       <div className="w-full">
-        <div className="bg-gradient-to-r from-gold to-gold/20 rounded-xl shadow-xl hover:shadow-2xl hover:scale-101 transition-all duration-300 ease-out p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 2xl:p-10 relative overflow-hidden min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem] 2xl:min-h-[40rem]">
+        <div className="bg-gradient-to-r from-forest-light/60 to-forest-light/10  rounded-xl shadow-xl hover:shadow-2xl hover:scale-101 transition-all duration-300 ease-out p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 2xl:p-10 relative overflow-hidden min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem] 2xl:min-h-[40rem]">
           <div className="flex items-center justify-center h-full">
             <div className="text-white text-lg font-medium">
               Loading verse...
@@ -56,7 +60,7 @@ const Verse = () => {
               Failed to load verse
             </div>
             <button
-              onClick={refreshVerse}
+              onClick={handleRefresh}
               className="bg-white/20 text-white px-4 py-2 rounded-full hover:bg-white/30 transition-colors"
             >
               Try Again
@@ -90,7 +94,7 @@ const Verse = () => {
             </div>
             <Tooltip content="Refresh" position="left">
               <button
-                onClick={refreshVerse}
+                onClick={handleRefresh}
                 className="p-1 sm:p-1.5 md:p-2 hover:bg-white/10 rounded-full transition-colors"
               >
                 <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 fill-white/20 drop-shadow-md text-white/70 hover:text-white" />

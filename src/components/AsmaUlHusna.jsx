@@ -16,7 +16,7 @@ import { shareContent, formatters } from "../utils/shareUtils";
 import Tooltip from "./Tooltip";
 
 const AsmaUlHusna = () => {
-  const { dailyName, loading, error } = useDailyName();
+  const { dailyName, loading, error, refreshName } = useDailyName();
   const [isFavorited, setIsFavorited] = useState(false);
 
   // Calculate content length
@@ -35,7 +35,7 @@ const AsmaUlHusna = () => {
   if (loading) {
     return (
       <div className="w-full">
-        <div className="bg-gradient-to-r from-forest to-forest/20 rounded-xl shadow-xl hover:shadow-2xl hover:scale-101 transition-all duration-300 ease-out p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 2xl:p-10 relative overflow-hidden min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem] 2xl:min-h-[40rem]">
+        <div className="bg-gradient-to-r from-plum-light/60 to-plum-light/10 rounded-xl shadow-xl hover:shadow-2xl hover:scale-101 transition-all duration-300 ease-out p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 2xl:p-10 relative overflow-hidden min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem] 2xl:min-h-[40rem]">
           <div className="flex items-center justify-center h-full">
             <div className="text-white text-lg font-medium">
               Loading divine name...
@@ -83,8 +83,11 @@ const AsmaUlHusna = () => {
                 Asma'ul Ḥusnā
               </p>
             </div>
-            <Tooltip content="Work in progress" position="left">
-              <button className="p-1 sm:p-1.5 md:p-2 hover:bg-white/10  rounded-full transition-colors">
+            <Tooltip content="Refresh" position="left">
+              <button
+                onClick={refreshName}
+                className="p-1 sm:p-1.5 md:p-2 hover:bg-white/10  rounded-full transition-colors"
+              >
                 <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 fill-white/20 drop-shadow-md text-white/70 hover:text-white " />
               </button>
             </Tooltip>

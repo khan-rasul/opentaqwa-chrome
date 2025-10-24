@@ -1,11 +1,6 @@
 /*
  * OpenTaqwā - Islamic Companion Extension
  * Copyright (c) 2025 [Rasul Khan]
- *
- * This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
- *
- * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 import { useState, useCallback } from "react";
 import { geocodingApi } from "../services/geocodingApi";
@@ -15,27 +10,19 @@ const GPS_TIMEOUT = 7000;
 const GEOCODING_TIMEOUT = 4000;
 const FALLBACK_LOCATION = { city: "Makkah", country: "Saudi Arabia" };
 
-// Helper: Get cached location
+// Helper: Cache management
 const getCachedLocation = () => {
   try {
     const cached = localStorage.getItem("lastKnownLocation");
-    return cached ? JSON.parse(cached) : null;
+    const timestamp = localStorage.getItem("lastKnownLocationTimestamp");
+    const isFresh = timestamp && Date.now() - parseInt(timestamp) < ONE_HOUR;
+
+    return cached && isFresh ? JSON.parse(cached) : null;
   } catch {
     return null;
   }
 };
 
-// Helper: Check if cache is fresh (less than 1 hour old)
-const isCacheFresh = () => {
-  try {
-    const timestamp = localStorage.getItem("lastKnownLocationTimestamp");
-    return timestamp && Date.now() - parseInt(timestamp) < ONE_HOUR;
-  } catch {
-    return false;
-  }
-};
-
-// Helper: Save location to cache
 const saveToCache = (location) => {
   try {
     localStorage.setItem("lastKnownLocation", JSON.stringify(location));
@@ -45,11 +32,11 @@ const saveToCache = (location) => {
   }
 };
 
-// Helper: Get coordinates from GPS
-const getGPSCoordinates = (options = {}) => {
+// Helper: Get current location
+const getCurrentPosition = (options = {}) => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error("Geolocation is not supported"));
+      reject(new Error("Geolocation not supported"));
       return;
     }
 
@@ -61,42 +48,12 @@ const getGPSCoordinates = (options = {}) => {
         }),
       reject,
       {
-        timeout: options.timeout || GPS_TIMEOUT,
+        timeout: GPS_TIMEOUT,
         enableHighAccuracy: options.forceRefresh || false,
-        maximumAge: options.forceRefresh ? 0 : 300000, // 5 min or fresh
+        maximumAge: options.forceRefresh ? 0 : 300000,
       }
     );
   });
-};
-
-// Helper: Reverse geocode with timeout
-const geocodeWithTimeout = async (latitude, longitude) => {
-  return Promise.race([
-    geocodingApi.reverseGeocode(latitude, longitude),
-    new Promise((_, reject) =>
-      setTimeout(
-        () => reject(new Error("Geocoding timeout")),
-        GEOCODING_TIMEOUT
-      )
-    ),
-  ]);
-};
-
-// Helper: Fetch fresh location from GPS
-const fetchFreshLocation = async (forceRefresh = false) => {
-  const coords = await getGPSCoordinates({ forceRefresh });
-  console.log("Got GPS coordinates:", coords);
-
-  try {
-    const { city, country } = await geocodeWithTimeout(
-      coords.latitude,
-      coords.longitude
-    );
-    return { ...coords, city, country };
-  } catch {
-    console.warn("Geocoding failed, using generic names");
-    return { ...coords, city: "Current Location", country: "GPS Location" };
-  }
 };
 
 export const useGeolocation = () => {
@@ -104,97 +61,62 @@ export const useGeolocation = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Main function: Get location (with cache support)
-  const getCurrentLocation = useCallback(async (useCache = true) => {
+  const getLocation = useCallback(async (forceRefresh = false) => {
     setLoading(true);
     setError(null);
 
     try {
-      // Try fresh cache first if allowed
-      if (useCache && isCacheFresh()) {
+      // Check cache first unless force refresh
+      if (!forceRefresh) {
         const cached = getCachedLocation();
         if (cached) {
-          console.log("Using recent cached location");
           setLocation(cached);
           setLoading(false);
           return cached;
         }
       }
 
-      // Fetch fresh location with timeout fallback
-      const freshLocation = await Promise.race([
-        fetchFreshLocation(false),
+      // Get fresh coordinates
+      const coords = await getCurrentPosition({ forceRefresh });
+
+      // Get location name
+      const locationData = await Promise.race([
+        geocodingApi.reverseGeocode(coords.latitude, coords.longitude),
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("GPS timeout")), GPS_TIMEOUT + 1000)
+          setTimeout(
+            () => reject(new Error("Geocoding timeout")),
+            GEOCODING_TIMEOUT
+          )
         ),
       ]);
 
-      console.log("Got fresh location:", freshLocation);
+      const freshLocation = {
+        ...coords,
+        city: locationData.city || "Unknown City",
+        country: locationData.country || "Unknown Country",
+      };
+
       saveToCache(freshLocation);
       setLocation(freshLocation);
-      setLoading(false);
       return freshLocation;
     } catch (err) {
-      console.warn("Fresh location failed:", err.message);
+      console.error("Location fetch failed:", err.message);
 
-      // Fallback 1: Any cached location
+      // Try cached location as fallback
       const cached = getCachedLocation();
       if (cached) {
-        console.log("Using old cached location as fallback");
         setLocation(cached);
-        setLoading(false);
         return cached;
       }
 
-      // Fallback 2: Default location
-      console.log("Using default fallback location");
-      saveToCache(FALLBACK_LOCATION);
+      // Ultimate fallback
       setLocation(FALLBACK_LOCATION);
-      setLoading(false);
+      setError("Could not get location");
       return FALLBACK_LOCATION;
-    }
-  }, []);
-
-  // Force refresh: Always fetch fresh, bypass cache
-  const forceRefreshLocation = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      console.log("Force refreshing location (ignoring cache)...");
-      const freshLocation = await fetchFreshLocation(true);
-
-      console.log("Force refresh successful:", freshLocation);
-      saveToCache(freshLocation);
-      setLocation(freshLocation);
+    } finally {
       setLoading(false);
-      return freshLocation;
-    } catch (err) {
-      const errorMsg = err.message || "Failed to get location";
-      console.error("Force refresh failed:", errorMsg);
-      setError(errorMsg);
-      setLoading(false);
-      throw err;
     }
   }, []);
 
-  // Clear cache
-  const clearCache = useCallback(() => {
-    try {
-      localStorage.removeItem("lastKnownLocation");
-      localStorage.removeItem("lastKnownLocationTimestamp");
-      console.log("Location cache cleared");
-    } catch (error) {
-      console.error("Failed to clear cache:", error);
-    }
-  }, []);
-
-  return {
-    location,
-    loading,
-    error,
-    getCurrentLocation,
-    forceRefreshLocation,
-    clearCache,
-  };
+  return { location, loading, error, getLocation };
 };

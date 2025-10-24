@@ -26,28 +26,8 @@ export const quranApi = {
     // Get random verse from this surah
     const randomVerse = Math.floor(Math.random() * verseCount) + 1;
 
-    // Fetch both Arabic and English (using al-Hilali & Khan translation)
-    const [arabicResponse, englishResponse] = await Promise.all([
-      axios.get(`${QURAN_API_BASE}/ayah/${randomSurah}:${randomVerse}`),
-      axios.get(
-        `${QURAN_API_BASE}/ayah/${randomSurah}:${randomVerse}/en.hilali`
-      ),
-    ]);
-
-    const arabicVerse = arabicResponse.data.data;
-    const englishVerse = englishResponse.data.data;
-
-    return {
-      arabic: arabicVerse.text,
-      english: englishVerse.text,
-      surahName: arabicVerse.surah.englishName,
-      surahNameArabic: arabicVerse.surah.name,
-      verseNumber: arabicVerse.numberInSurah,
-      surahNumber: arabicVerse.surah.number,
-      reference: `${arabicVerse.surah.englishName} (${arabicVerse.surah.number}:${arabicVerse.numberInSurah})`,
-    };
+    return quranApi.getVerseByReference(randomSurah, randomVerse);
   },
-
   // Get verse by specific reference (using al-Hilali & Khan translation)
   getVerseByReference: async (surahNumber, verseNumber) => {
     const [arabicResponse, englishResponse] = await Promise.all([

@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Dhikr from "./components/Dhikr";
 import Dua from "./components/Dua";
 import Durood from "./components/Durood";
@@ -27,8 +27,7 @@ import Footer from "./components/Footer";
 
 const AppContent = () => {
   const { location, updateLocation } = useLocation();
-  const initializationRef = useRef(false);
-  const { getCurrentLocation } = useGeolocation();
+  const { getLocation } = useGeolocation();
   const {
     prayerTimes,
     loading: prayerLoading,
@@ -36,52 +35,18 @@ const AppContent = () => {
   } = usePrayerTimes(location);
 
   useEffect(() => {
-    // Prevent multiple initializations
-    if (initializationRef.current) return;
-    initializationRef.current = true;
-
+    // Initialize location using the hook's built-in cache handling
     const initializeLocation = async () => {
-      // If we already have cached location, just try to refresh in background
-      if (location) {
-        console.log(
-          "Already have cached location, refreshing in background..."
-        );
-
-        try {
-          const freshLocation = await getCurrentLocation();
-          console.log("Got fresh location update:", freshLocation);
-          updateLocation(freshLocation);
-        } catch (error) {
-          console.log(
-            "Background refresh failed, keeping cached location:",
-            error
-          );
-        }
-        return;
-      }
-
-      // If no cached location, get fresh location
-      console.log("No cached location, getting fresh location...");
-
       try {
-        const freshLocation = await getCurrentLocation();
-        console.log("Successfully got fresh location:", freshLocation);
-        updateLocation(freshLocation);
-      } catch (locationError) {
-        console.log(
-          "Fresh location failed, using Makkah as fallback:",
-          locationError
-        );
-        const fallbackLocation = {
-          city: "Makkah",
-          country: "Saudi Arabia",
-        };
-        updateLocation(fallbackLocation);
+        const currentLocation = await getLocation();
+        updateLocation(currentLocation);
+      } catch (error) {
+        console.error("Location initialization failed:", error);
       }
     };
 
     initializeLocation();
-  }, []); // Empty dependency array
+  }, []);
 
   // Prepare prayer data for components
   const prayerData = {

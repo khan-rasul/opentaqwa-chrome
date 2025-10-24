@@ -45,14 +45,14 @@ export const useDailyVerse = () => {
     }
   };
 
-  const fetchDailyVerse = async () => {
+  const fetchDailyVerse = async (useCache = true) => {
     try {
       setLoading(true);
       setError(null);
 
       // Check cache first
       const cachedVerse = getTodaysVerseFromCache();
-      if (cachedVerse) {
+      if (useCache && cachedVerse) {
         console.log("Using cached daily verse");
         setVerse(cachedVerse);
         setLoading(false);

@@ -83,7 +83,6 @@ export const usePrayerNotifications = (prayerTimes) => {
         const atTimeTimeout = setTimeout(() => {
           sendNotification(`${prayerName} Prayer Time`, {
             body: `It's time for ${prayerName} prayer`,
-            // icon: "/icon-192x192.png",
             tag: `${prayerName}-time`,
             requireInteraction: true, // Stays until dismissed
           });

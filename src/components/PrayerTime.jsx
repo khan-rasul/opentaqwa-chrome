@@ -20,7 +20,7 @@ import { useGeolocation } from "../hooks/useGeolocation";
 
 const PrayerTime = ({ prayerData }) => {
   const { updateLocation } = useLocation();
-  const { getCurrentLocation } = useGeolocation();
+  const { getLocation } = useGeolocation();
   const [isFlipped, setIsFlipped] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -54,20 +54,19 @@ const PrayerTime = ({ prayerData }) => {
     setLocationError("");
 
     try {
-      const location = await getCurrentLocation(false);
+      const location = await getLocation(false);
 
       // Wait a moment then flip back
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Flip back first
       setIsFlipped(false);
-      setIsLoadingLocation(false);
 
       // Update location (after card is flipped back)
       updateLocation(location);
     } catch (error) {
-      console.error("Error getting current location:", error);
       setLocationError("Unable to detect location. Please enter manually.");
+    } finally {
       setIsLoadingLocation(false);
     }
   };

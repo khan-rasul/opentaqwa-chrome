@@ -87,11 +87,6 @@ const Header = ({ prayerData }) => {
   return (
     <>
       <div className="bg-gradient-to-r from-slate-600/30 to-slate-700/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-out p-3 sm:p-4 md:p-5 lg:p-6 xl:p-7 2xl:p-8 relative">
-        {/* Responsive background decoration */}
-        <div className="absolute top-0 right-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-white/5 rounded-full -translate-y-2 sm:-translate-y-3 md:-translate-y-4 lg:-translate-y-4 xl:-translate-y-4 2xl:-translate-y-5 translate-x-2 sm:translate-x-3 md:translate-x-4 lg:translate-x-4 xl:translate-x-4 2xl:translate-x-5"></div>
-        <div className="absolute bottom-0 left-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-11 lg:h-11 xl:w-12 xl:h-12 2xl:w-14 2xl:h-14 bg-white/3 rounded-full translate-y-1 sm:translate-y-1.5 md:translate-y-2 lg:translate-y-2 xl:translate-y-2 2xl:translate-y-3 -translate-x-1 sm:-translate-x-1.5 md:-translate-x-2 lg:-translate-x-2 xl:-translate-x-2 2xl:-translate-x-3"></div>
-        <div className="absolute top-1/2 right-1/4 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 2xl:w-12 2xl:h-12 bg-white/4 rounded-full transform -translate-y-1/2"></div>
-
         <div className="flex justify-between items-center relative z-20">
           {/* Current Prayer Info */}
           <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 lg:space-x-5 xl:space-x-6">

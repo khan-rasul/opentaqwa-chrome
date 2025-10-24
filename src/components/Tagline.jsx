@@ -36,7 +36,7 @@ const Tagline = () => (
           />
 
           {/* Brand Name */}
-          <h2 className="text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold font-quicksand text-white leading-tight">
+          <h2 className="text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold font-montserrat text-white leading-tight">
             Open
             <span className="text-gold-light font-great-vibes">Taqwā</span>
           </h2>

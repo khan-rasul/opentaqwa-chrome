@@ -17,10 +17,6 @@ const Footer = () => {
 
   return (
     <footer className="w-full bg-gradient-to-r from-slate-600/30 to-slate-700/20 rounded-xl shadow-lg border border-white/10 p-4 sm:p-5 md:p-6 relative">
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-20 h-20 bg-gold/10 rounded-full -translate-y-10 translate-x-10 pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-16 h-16 bg-plum/10 rounded-full translate-y-8 -translate-x-8 pointer-events-none"></div>
-
       <div className="relative z-10">
         {/* Two Column Layout - Always 2 columns */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
@@ -90,7 +86,7 @@ const Footer = () => {
               CC BY-NC 4.0
             </a>
           </p>
-          <p className="text-center sm:text-right text-white/40">v0.0.1</p>
+          <p className="text-center sm:text-right text-white/40">v0.0.2</p>
         </div>
       </div>
     </footer>

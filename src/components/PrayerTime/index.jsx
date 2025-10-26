@@ -29,8 +29,8 @@ const PrayerTime = () => {
   };
 
   const handleLocationUpdate = (location) => {
-    setIsFlipped(false);
     updateLocation(location);
+    setIsFlipped(false);
   };
 
   // Loading state

@@ -23,11 +23,7 @@ const Back = ({ onFlip, onLocationUpdate }) => {
   const suggestionsRef = useRef(null);
 
   // Use geolocation hook
-  const {
-    error: geoError,
-    getCurrentLocation,
-    setManualLocation,
-  } = useGeolocation();
+  const { error: geoError, getCurrentLocation } = useGeolocation();
 
   // Use the location search hook
   const {
@@ -81,14 +77,10 @@ const Back = ({ onFlip, onLocationUpdate }) => {
       setSearchQuery(`${formattedLocation.city}, ${formattedLocation.country}`);
       setShowSuggestions(false);
       setSelectedIndex(-1);
-
-      // Save to cache via setManualLocation
-      setManualLocation(formattedLocation);
-
       // Update location in parent component
       onLocationUpdate(formattedLocation);
     },
-    [formatLocation, setSearchQuery, setManualLocation, onLocationUpdate]
+    [formatLocation, setSearchQuery, onLocationUpdate]
   );
 
   // Handle search input changes

@@ -67,7 +67,6 @@ const Back = ({ onFlip, onLocationUpdate }) => {
       }
     } catch (error) {
       console.error("Failed to get current location:", error);
-      // Error is already set by useGeolocation hook
     } finally {
       setIsDetectingLocation(false);
     }

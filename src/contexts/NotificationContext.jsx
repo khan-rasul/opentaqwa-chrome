@@ -26,7 +26,7 @@ const DEFAULT_SETTINGS = {
   notifyBefore: true, // Notify 10 minutes before
   notifyAtTime: true, // Notify at exact prayer time
   minutesBefore: 10,
-  playAdhan: false,
+  playAdhan: false, // TODO: Unimplemented
   prayers: {
     Fajr: true,
     Dhuhr: true,

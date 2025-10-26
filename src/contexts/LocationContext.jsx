@@ -9,6 +9,8 @@
  */
 import { createContext, useContext, useState, useEffect } from "react";
 
+const CACHE_KEY = "opentaqwa:chrome:lastKnownLocation";
+
 const LocationContext = createContext();
 
 export const useLocation = () => {
@@ -23,7 +25,7 @@ export const LocationProvider = ({ children }) => {
   const [location, setLocation] = useState(() => {
     // Load cached location on mount
     try {
-      const cached = localStorage.getItem("lastKnownLocation");
+      const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
         return JSON.parse(cached);
       }
@@ -36,7 +38,7 @@ export const LocationProvider = ({ children }) => {
   // Save location to localStorage whenever it changes
   useEffect(() => {
     if (location) {
-      localStorage.setItem("lastKnownLocation", JSON.stringify(location));
+      localStorage.setItem(CACHE_KEY, JSON.stringify(location));
     }
   }, [location]);
 

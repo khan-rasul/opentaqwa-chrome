@@ -23,7 +23,7 @@ export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState(() => {
     // Load saved language preference or default to English
     const savedLanguage = localStorage.getItem("selectedLanguage");
-    return savedLanguage || "en";
+    return savedLanguage || "ar";
   });
 
   // Save language preference whenever it changes

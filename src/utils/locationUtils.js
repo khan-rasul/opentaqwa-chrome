@@ -7,19 +7,18 @@
  *
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
-export const getLocationString = (prayerData) => {
-  if (prayerData.loading) return "Getting location...";
-  if (prayerData.error) return "Location unavailable";
+const DEFAULT_LOCATION = "Somewhere in Duniya";
 
-  if (prayerData.location) {
-    if (prayerData.location.city && prayerData.location.country) {
-      return `${prayerData.location.city}, ${prayerData.location.country}`;
-    } else if (prayerData.location.latitude && prayerData.location.longitude) {
-      return `${prayerData.location.latitude.toFixed(
-        2
-      )}, ${prayerData.location.longitude.toFixed(2)}`;
-    }
+const formatCityCountry = (city, country) => `${city}, ${country}`;
+
+export const getLocationString = (location = null) => {
+  if (!location) return DEFAULT_LOCATION;
+
+  const { city, country } = location;
+
+  if (city && country) {
+    return formatCityCountry(city, country);
   }
 
-  return "Makkah, Saudi Arabia";
+  return DEFAULT_LOCATION;
 };

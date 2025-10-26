@@ -59,4 +59,46 @@ export const geocodingApi = {
       throw new Error("Failed to get location name");
     }
   },
+  searchLocations: async (query) => {
+    if (query.length < 2) return [];
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await axios.get(`${NOMINATIM_BASE_URL}/search`, {
+        params: {
+          q: query,
+          format: "json",
+          addressdetails: 1,
+          limit: 5,
+          featuretype: "city",
+        },
+        timeout: 5000,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      if (error.code === "ECONNABORTED" || error.name === "AbortError") {
+        throw new Error("Search service timeout");
+      }
+      return [];
+    }
+  },
+
+  formatLocation: (location) => {
+    return {
+      city:
+        location.address?.city ||
+        location.address?.town ||
+        location.address?.village ||
+        location.name,
+      country: location.address?.country || "",
+      lat: parseFloat(location.lat),
+      lon: parseFloat(location.lon),
+    };
+  },
 };

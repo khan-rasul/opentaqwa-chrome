@@ -25,7 +25,6 @@ export const useNotifications = () => {
     if (!isSupported) {
       return { granted: false, error: "Notifications not supported" };
     }
-
     try {
       const result = await Notification.requestPermission();
       setPermission(result);
@@ -54,7 +53,7 @@ export const useNotifications = () => {
           icon: "icon.png",
           badge: "icon.png",
           vibrate: [200, 100, 200],
-          tag: "opentaqwa-prayer", // Replaces previous notifications
+          tag: "opentaqwa-prayer",
           requireInteraction: true,
           ...options,
         });
@@ -69,7 +68,6 @@ export const useNotifications = () => {
 
   return {
     permission,
-    isSupported,
     requestPermission,
     sendNotification,
   };

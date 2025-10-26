@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
-import { Github, Bug, Lightbulb, Heart } from "lucide-react";
+import { Github, Bug, Lightbulb } from "lucide-react";
 import Tooltip from "./Tooltip";
 
 const Footer = () => {
@@ -16,7 +16,7 @@ const Footer = () => {
   const githubIssuesUrl = githubUrl.concat("/issues");
 
   return (
-    <footer className="w-full bg-gradient-to-r from-slate-600/30 to-slate-700/20 rounded-xl shadow-lg border border-white/10 p-4 sm:p-5 md:p-6 relative overflow-hidden">
+    <footer className="w-full bg-gradient-to-r from-slate-600/30 to-slate-700/20 rounded-xl shadow-lg border border-white/10 p-4 sm:p-5 md:p-6 relative">
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-20 h-20 bg-gold/10 rounded-full -translate-y-10 translate-x-10 pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-16 h-16 bg-plum/10 rounded-full translate-y-8 -translate-x-8 pointer-events-none"></div>

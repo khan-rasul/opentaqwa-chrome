@@ -1,122 +1,153 @@
 /*
  * OpenTaqwā - Islamic Companion Extension
  * Copyright (c) 2025 [Rasul Khan]
+ *
+ * This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
+ * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+ *
+ * SPDX-License-Identifier: CC-BY-NC-4.0
  */
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { geocodingApi } from "../services/geocodingApi";
+import { useLocation } from "../contexts/LocationContext";
 
-const ONE_HOUR = 60 * 60 * 1000;
 const GPS_TIMEOUT = 7000;
 const GEOCODING_TIMEOUT = 4000;
 const FALLBACK_LOCATION = { city: "Makkah", country: "Saudi Arabia" };
 
-// Helper: Cache management
-const getCachedLocation = () => {
+// Helper: Get location with geocoding
+const getLocationWithGeocoding = async (latitude, longitude) => {
   try {
-    const cached = localStorage.getItem("lastKnownLocation");
-    const timestamp = localStorage.getItem("lastKnownLocationTimestamp");
-    const isFresh = timestamp && Date.now() - parseInt(timestamp) < ONE_HOUR;
+    const locationNames = await Promise.race([
+      geocodingApi.reverseGeocode(latitude, longitude),
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error("Geocoding timeout")),
+          GEOCODING_TIMEOUT
+        )
+      ),
+    ]);
 
-    return cached && isFresh ? JSON.parse(cached) : null;
-  } catch {
-    return null;
-  }
-};
-
-const saveToCache = (location) => {
-  try {
-    localStorage.setItem("lastKnownLocation", JSON.stringify(location));
-    localStorage.setItem("lastKnownLocationTimestamp", Date.now().toString());
+    return {
+      latitude,
+      longitude,
+      city: locationNames.city,
+      country: locationNames.country,
+    };
   } catch (error) {
-    console.error("Failed to cache location:", error);
+    console.warn("Geocoding failed, using coordinates with generic names");
+    return {
+      latitude,
+      longitude,
+      city: "Currently",
+      country: "Duniya",
+    };
   }
 };
 
-// Helper: Get current location
-const getCurrentPosition = (options = {}) => {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Geolocation not supported"));
-      return;
+const requestLocationPermission = async () => {
+  try {
+    const result = await navigator.permissions.query({ name: "geolocation" });
+    if (result.state === "denied") {
+      throw new Error("Location permission was denied");
     }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) =>
-        resolve({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        }),
-      reject,
-      {
-        timeout: GPS_TIMEOUT,
-        enableHighAccuracy: options.forceRefresh || false,
-        maximumAge: options.forceRefresh ? 0 : 300000,
-      }
-    );
-  });
+    return result.state;
+  } catch (error) {
+    console.error("Permission request failed:", error);
+    throw error;
+  }
 };
 
 export const useGeolocation = () => {
-  const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { location, updateLocation: setLocation } = useLocation();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const getLocation = useCallback(async (forceRefresh = false) => {
-    setLoading(true);
-    setError(null);
+  const getCurrentLocation = useCallback(() => {
+    return new Promise(async (resolve, reject) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      // Check cache first unless force refresh
-      if (!forceRefresh) {
-        const cached = getCachedLocation();
-        if (cached) {
-          setLocation(cached);
-          setLoading(false);
-          return cached;
-        }
+      // Check browser support
+      if (!navigator.geolocation) {
+        const error = "Geolocation is not supported by this browser.";
+        setError(error);
+        setLoading(false);
+        reject(error);
+        return;
       }
 
-      // Get fresh coordinates
-      const coords = await getCurrentPosition({ forceRefresh });
-
-      // Get location name
-      const locationData = await Promise.race([
-        geocodingApi.reverseGeocode(coords.latitude, coords.longitude),
-        new Promise((_, reject) =>
-          setTimeout(
-            () => reject(new Error("Geocoding timeout")),
-            GEOCODING_TIMEOUT
-          )
-        ),
-      ]);
-
-      const freshLocation = {
-        ...coords,
-        city: locationData.city || "Unknown City",
-        country: locationData.country || "Unknown Country",
+      // Fallback handler for timeout or GPS failure
+      const useFallback = () => {
+        console.log("Using Makkah as fallback");
+        setLocation(FALLBACK_LOCATION);
+        setLoading(false);
+        resolve(FALLBACK_LOCATION);
       };
 
-      saveToCache(freshLocation);
-      setLocation(freshLocation);
-      return freshLocation;
-    } catch (err) {
-      console.error("Location fetch failed:", err.message);
+      // Set timeout for GPS request
+      const timeoutId = setTimeout(() => {
+        console.log("GPS timeout");
+        useFallback();
+      }, GPS_TIMEOUT + 1000);
 
-      // Try cached location as fallback
-      const cached = getCachedLocation();
-      if (cached) {
-        setLocation(cached);
-        return cached;
+      try {
+        await requestLocationPermission();
+      } catch (error) {
+        useFallback();
+        return;
       }
 
-      // Ultimate fallback
-      setLocation(FALLBACK_LOCATION);
-      setError("Could not get location");
-      return FALLBACK_LOCATION;
-    } finally {
+      // Get GPS location
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          clearTimeout(timeoutId);
+
+          const { latitude, longitude } = position.coords;
+
+          try {
+            const locationData = await getLocationWithGeocoding(
+              latitude,
+              longitude
+            );
+            console.log("Successfully got location");
+
+            setLocation(locationData);
+            setLoading(false);
+            resolve(locationData);
+          } catch (error) {
+            console.error("Location processing failed:", error);
+            useFallback();
+          }
+        },
+        (gpsError) => {
+          clearTimeout(timeoutId);
+          console.error("GPS error:", gpsError.message);
+
+          if (!useFallback()) {
+            setError(gpsError.message);
+            reject(gpsError.message);
+          }
+        },
+        {
+          timeout: GPS_TIMEOUT,
+          enableHighAccuracy: false,
+          maximumAge: 300000, // 5 minutes
+        }
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    if (location) {
       setLoading(false);
     }
   }, []);
 
-  return { location, loading, error, getLocation };
+  return {
+    location,
+    loading,
+    error,
+    getCurrentLocation,
+  };
 };

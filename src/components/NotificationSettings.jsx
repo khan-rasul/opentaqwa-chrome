@@ -12,21 +12,13 @@ import { useNotifications } from "../hooks/useNotifications";
 import { useNotificationSettings } from "../contexts/NotificationContext";
 
 const NotificationSettings = ({ isOpen, onClose }) => {
-  const { permission, requestPermission, sendNotification } =
-    useNotifications();
+  const { permission, sendNotification } = useNotifications();
   const { settings, updateSettings, togglePrayer } = useNotificationSettings();
 
   if (!isOpen) return null;
 
-  const handleEnableNotifications = async () => {
-    const result = await requestPermission();
-    if (result.granted) {
-      updateSettings({ enabled: true });
-      // Send test notification
-      sendNotification("Notifications Enabled", {
-        body: "You'll now receive prayer time reminders",
-      });
-    }
+  const handleEnableNotifications = () => {
+    updateSettings({ enabled: true });
   };
 
   const handleDisableNotifications = () => {
@@ -100,21 +92,6 @@ const NotificationSettings = ({ isOpen, onClose }) => {
                 <span>Enable Notifications</span>
               </button>
             )}
-            {/* Test Notification */}
-            {permission === "granted" && (
-              <button
-                onClick={() => {
-                  sendNotification("Test Notification", {
-                    body: "If you see this, notifications are working!",
-                    requireInteraction: true,
-                  });
-                }}
-                className="w-full bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 text-blue-200 font-semibold py-3 rounded-lg transition-all duration-300 font-quicksand flex items-center justify-center space-x-2 mt-3"
-              >
-                <Bell className="w-5 h-5" />
-                <span>Send Test Notification</span>
-              </button>
-            )}
           </div>
 
           {/* Settings (only show if enabled) */}
@@ -122,8 +99,8 @@ const NotificationSettings = ({ isOpen, onClose }) => {
             <div className="space-y-4">
               {/* Notification Timing */}
               <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-semibold font-quicksand mb-3 text-sm">
-                  Notification Timing
+                <h3 className="text-white font-light font-montserrat mb-3 text-sm">
+                  Notification Settings
                 </h3>
 
                 {/* Notify Before */}
@@ -144,9 +121,6 @@ const NotificationSettings = ({ isOpen, onClose }) => {
                 {/* Minutes Before */}
                 {settings.notifyBefore && (
                   <div className="mb-3 ml-4">
-                    <label className="block text-white/70 text-xs font-montserrat mb-2">
-                      Minutes before:
-                    </label>
                     <select
                       value={settings.minutesBefore}
                       onChange={(e) =>
@@ -183,8 +157,8 @@ const NotificationSettings = ({ isOpen, onClose }) => {
 
               {/* Prayer Selection */}
               <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-semibold font-quicksand mb-3 text-sm">
-                  Prayers to Notify
+                <h3 className="text-white font-light font-montserrat mb-3 text-sm">
+                  Notifications for
                 </h3>
                 <div className="space-y-2">
                   {prayers.map((prayer) => (
@@ -204,21 +178,6 @@ const NotificationSettings = ({ isOpen, onClose }) => {
                     </label>
                   ))}
                 </div>
-              </div>
-
-              {/* Adhan Option (Future) */}
-              <div className="bg-white/5 rounded-lg p-4 opacity-50">
-                <label className="flex items-center justify-between cursor-not-allowed">
-                  <span className="text-white/90 text-sm font-montserrat">
-                    Play Adhan (Coming Soon)
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={settings.playAdhan}
-                    disabled
-                    className="w-5 h-5 accent-gold"
-                  />
-                </label>
               </div>
             </div>
           )}

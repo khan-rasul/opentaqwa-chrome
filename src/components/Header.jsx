@@ -25,8 +25,12 @@ import Tooltip from "./Tooltip";
 import { useAuth } from "../contexts/AuthContext";
 import NotificationSettings from "./NotificationSettings";
 import { useNotificationSettings } from "../contexts/NotificationContext";
+import { usePrayerTimes } from "../hooks/usePrayerTimes";
+import { useLocation } from "../contexts/LocationContext";
+import { useClickOutside } from "../hooks/useClickOutside";
+import { getUserInitials } from "../utils/userUtil";
 
-const Header = ({ prayerData }) => {
+const Header = () => {
   const { user, signOut, isAuthenticated } = useAuth();
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -35,33 +39,20 @@ const Header = ({ prayerData }) => {
   const [showNotificationSettings, setShowNotificationSettings] =
     useState(false);
 
-  const userMenuRef = useRef(null);
-
-  const nextPrayer = getNextPrayer(prayerData.timings);
+  const { location } = useLocation();
+  const { prayerTimes, loading } = usePrayerTimes(location);
+  const nextPrayer = getNextPrayer(prayerTimes?.data?.timings || null);
   const nextPrayerDisplay = nextPrayer
     ? `${nextPrayer.name} - ${formatTime12Hour(nextPrayer.time)}`
-    : prayerData.loading
+    : loading
     ? "Loading..."
-    : "Prayer times unavailable";
+    : "Configure Location";
 
   // Close user menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setShowUserMenu(false);
-      }
-    };
+  const userMenuRef = useRef(null);
+  useClickOutside([userMenuRef], () => setShowUserMenu(false));
 
-    if (showUserMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showUserMenu]);
-
-  const handleUserClick = () => {
+  const handleAvatarClick = () => {
     if (isAuthenticated) {
       setShowUserMenu(!showUserMenu);
     } else {
@@ -72,16 +63,6 @@ const Header = ({ prayerData }) => {
   const handleSignOut = () => {
     signOut();
     setShowUserMenu(false);
-  };
-
-  // Get user initials for avatar
-  const getUserInitials = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
-    if (names.length >= 2) {
-      return `${names[0][0]}${names[1][0]}`.toUpperCase();
-    }
-    return user.name.substring(0, 2).toUpperCase();
   };
 
   return (
@@ -104,7 +85,7 @@ const Header = ({ prayerData }) => {
               <div className="flex items-center space-x-1 sm:space-x-1.5 md:space-x-2">
                 <MapPin className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5 text-white/70" />
                 <div className="text-white/80 text-xs sm:text-sm md:text-sm lg:text-base xl:text-lg 2xl:text-xl font-light font-montserrat drop-shadow-sm">
-                  {getLocationString(prayerData)}
+                  {getLocationString(location)}
                 </div>
               </div>
             </div>
@@ -144,7 +125,7 @@ const Header = ({ prayerData }) => {
                 position="left"
               >
                 <button
-                  onClick={handleUserClick}
+                  onClick={handleAvatarClick}
                   className={`bg-white/15 backdrop-blur-md rounded-full p-2 sm:p-2.5 md:p-3 lg:p-3.5 xl:p-4 2xl:p-5 border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 cursor-pointer ${
                     isAuthenticated
                       ? "bg-gradient-to-br from-gold-light to-gold-light/20"
@@ -153,7 +134,7 @@ const Header = ({ prayerData }) => {
                 >
                   {isAuthenticated ? (
                     <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 rounded-full flex items-center justify-center text-white font-bold font-quicksand text-[8px] sm:text-[10px] md:text-xs lg:text-sm xl:text-base 2xl:text-lg">
-                      {getUserInitials()}
+                      {getUserInitials(user)}
                     </div>
                   ) : (
                     <User className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 text-white/90 drop-shadow-md" />
@@ -168,7 +149,7 @@ const Header = ({ prayerData }) => {
                   <div className="p-4 border-b border-white/10">
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-gold-light to-gold-light/20 rounded-full flex items-center justify-center text-white font-bold font-quicksand text-sm">
-                        {getUserInitials()}
+                        {getUserInitials(user)}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-semibold font-quicksand text-sm truncate">

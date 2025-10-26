@@ -37,7 +37,8 @@ const msUntilTime = (targetMinutes) => {
 };
 
 export const usePrayerNotifications = (prayerTimes) => {
-  const { sendNotification, permission } = useNotifications();
+  const { sendNotification, permission, requestPermission } =
+    useNotifications();
   const { settings } = useNotificationSettings();
   const timeoutsRef = useRef([]);
 
@@ -46,8 +47,18 @@ export const usePrayerNotifications = (prayerTimes) => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
 
-    // Don't schedule if notifications are disabled or not permitted
-    if (!settings.enabled || permission !== "granted" || !prayerTimes) {
+    if (!settings.enabled) return;
+
+    // Request permission if not granted
+    if (permission !== "granted") {
+      const result = requestPermission();
+      if (!result.granted) {
+        console.warn("Notification permission not granted");
+        return;
+      }
+    }
+
+    if (!prayerTimes) {
       return;
     }
 
@@ -86,12 +97,6 @@ export const usePrayerNotifications = (prayerTimes) => {
             tag: `${prayerName}-time`,
             requireInteraction: true, // Stays until dismissed
           });
-
-          // TODO: Play Adhan if enabled
-          if (settings.playAdhan) {
-            // Implement Adhan audio playback
-            console.log("Play Adhan for", prayerName);
-          }
         }, msUntilPrayer);
 
         timeoutsRef.current.push(atTimeTimeout);
@@ -103,5 +108,5 @@ export const usePrayerNotifications = (prayerTimes) => {
       timeoutsRef.current.forEach(clearTimeout);
       timeoutsRef.current = [];
     };
-  }, [prayerTimes, settings, permission, sendNotification]);
+  }, [prayerTimes, settings, permission]);
 };

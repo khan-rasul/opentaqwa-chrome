@@ -7,7 +7,7 @@
 
 A beautiful Chrome extension that provides Adhan times, Duas, Ayahs and more in an elegant side panel interface.
 
-Website: [opentaqwa.com](opentaqwa.com)
+Website: [opentaqwa.com](https://opentaqwa.com)
 
 ![OpenTaqwā Screenshot](public/screenshot.png)
 

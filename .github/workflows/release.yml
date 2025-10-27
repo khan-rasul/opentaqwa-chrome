@@ -1,0 +1,65 @@
+name: Chrome Extension Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm" # Cache npm dependencies
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (Vite)
+        run: npm run build
+
+      - name: Sync package.json version => manifest.json
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          # Backup original manifest if needed
+          if [ -f dist/manifest.json ]; then
+            jq ".version = \"$VERSION\"" dist/manifest.json > dist/manifest.json.tmp
+            mv dist/manifest.json.tmp dist/manifest.json
+          else
+            jq ".version = \"$VERSION\"" manifest.json > dist/manifest.json
+          fi
+        shell: bash
+
+      - name: Create ZIP
+        run: |
+          cd dist
+          zip -r ../opentaqwa.zip ./*
+          cd ..
+
+      - name: Upload & auto-publish to Chrome Web Store
+        env:
+          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+        run: |
+          npx chrome-webstore-upload-cli upload \
+            --source opentaqwa.zip \
+            --extension-id "$EXTENSION_ID" \
+            --client-id "$CLIENT_ID" \
+            --client-secret "$CLIENT_SECRET" \
+            --refresh-token "$REFRESH_TOKEN" \
+            --auto-publish
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: opentaqwa.zip
+          generate_release_notes: true

@@ -86,7 +86,7 @@ const Footer = () => {
               CC BY-NC 4.0
             </a>
           </p>
-          <p className="text-center sm:text-right text-white/40">v0.0.2</p>
+          <p className="text-center sm:text-right text-white/40">v0.0.3</p>
         </div>
       </div>
     </footer>

@@ -1,7 +1,7 @@
 # OpenTaqwā - Companion for the Ummah
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/version-0.0.2-blue.svg?style=for-the-badge)](https://github.com/khan-rasul/opentaqwa-chrome)
+[![Version](https://img.shields.io/badge/version-0.0.3-blue.svg?style=for-the-badge)](https://github.com/khan-rasul/opentaqwa-chrome)
 [![Status](https://img.shields.io/badge/Status-Preview_Available-green.svg?style=for-the-badge)](https://github.com/khan-rasul/opentaqwa-chrome)
 [![Development](https://img.shields.io/badge/Development-Open_for_Testing-orange.svg?style=for-the-badge)](https://github.com/khan-rasul/opentaqwa-chrome)
 

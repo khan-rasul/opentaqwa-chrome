@@ -47,25 +47,25 @@ const Back = ({ onFlip, onLocationUpdate }) => {
   const displaySuggestions = showSuggestions && shouldShowSuggestions;
 
   // Handle using current geolocation
-  const handleUseCurrentLocation = useCallback(async () => {
+  const handleUseCurrentLocation = useCallback(() => {
     setIsDetectingLocation(true);
-
-    try {
-      // Force refresh to get latest location
-      const location = await getCurrentLocation();
-
-      // Wait a moment for visual feedback
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Update location if successful
-      if (location) {
-        onLocationUpdate(location);
-      }
-    } catch (error) {
-      console.error("Failed to get current location:", error);
-    } finally {
-      setIsDetectingLocation(false);
-    }
+    getCurrentLocation()
+      .then((location) => {
+        return new Promise((resolve) =>
+          setTimeout(() => resolve(location), 300)
+        );
+      })
+      .then((location) => {
+        if (location) {
+          onLocationUpdate(location);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to get current location:", error);
+      })
+      .finally(() => {
+        setIsDetectingLocation(false);
+      });
   }, [getCurrentLocation, onLocationUpdate]);
 
   // Handle selecting a location from search results
@@ -74,32 +74,29 @@ const Back = ({ onFlip, onLocationUpdate }) => {
       const formattedLocation = formatLocation(location);
 
       // Update the search query to show what was selected
-      setSearchQuery(`${formattedLocation.city}, ${formattedLocation.country}`);
+      setSearchQuery("");
       setShowSuggestions(false);
       setSelectedIndex(-1);
-      // Update location in parent component
+      // Add delay before updating location
       onLocationUpdate(formattedLocation);
     },
     [formatLocation, setSearchQuery, onLocationUpdate]
   );
 
   // Handle search input changes
-  const handleSearchChange = useCallback(
-    (e) => {
-      setSearchQuery(e.target.value);
-      setShowSuggestions(true);
-      setSelectedIndex(-1);
-    },
-    [setSearchQuery]
-  );
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setShowSuggestions(true);
+    setSelectedIndex(-1);
+  };
 
   // Handle closing the settings panel
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     setShowSuggestions(false);
     setSelectedIndex(-1);
     resetSearch();
     onFlip();
-  }, [resetSearch, onFlip]);
+  };
 
   // Combine errors from geolocation and search
   const displayError = geoError || searchError;

@@ -22,9 +22,10 @@ import { usePrayerNotifications } from "../../hooks/usePrayerNotifications";
 const BACKGROUND_IMAGE_URL =
   "https://images.pexels.com/photos/33759665/pexels-photo-33759665.jpeg?_gl=1*lcmmth*_ga*MzcyMzEyMjQ1LjE3NTcwMjMyMTM.*_ga_8JE65Q40S6*czE3NTcwMjMyMTMkbzEkZzEkdDE3NTcwMjMyMzgkajM1JGwwJGgw";
 
-const Front = ({ onFlip }) => {
+const Front = ({ onFlip, className }) => {
   const { location } = useLocation();
-  const { prayerTimes: prayerData } = usePrayerTimes(location);
+  const { prayerTimes: prayerData, loading: prayerLoading } =
+    usePrayerTimes(location);
 
   const prayerTimes = formatPrayerTimesForDisplay(
     prayerData?.data?.timings || null
@@ -45,6 +46,22 @@ const Front = ({ onFlip }) => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  // Loading state
+  if (prayerLoading) {
+    return (
+      <div className={`w-full ${className}`}>
+        <div className="rounded-xl shadow-xl hover:shadow-2xl hover:scale-101 transition-all duration-300 ease-out p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 2xl:p-10 relative overflow-hidden bg-cover bg-center bg-no-repeat h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] 2xl:h-[42rem] bg-gradient-to-r from-slate-600 to-slate-900 ">
+          <div className="flex flex-col items-center justify-center h-full ">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-4 border-off-white border-t-transparent rounded-full animate-spin"></div>
+            <span className="mt-2 text-sm sm:text-base md:text-lg font-semibold font-quicksand text-off-white">
+              Loading Adhan times
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flip-card-front">

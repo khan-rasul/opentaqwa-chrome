@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.3",
   "license": "CC-BY-NC-4.0",
-  "author": "Rasul Khan <rasulkhan.nits@gmail.com>",
+  "author": "Rasul Khan",
   "repository": {
     "type": "git",
-    "url": "https://github.com/khan-rasul/open-taqwa.git"
+    "url": "https://github.com/khan-rasul/opentaqwa-chrome.git"
   },
-  "homepage": "https://github.com/khan-rasul/open-taqwa#readme",
+  "homepage": "https://opentaqwa.com",
   "bugs": {
-    "url": "https://github.com/khan-rasul/open-taqwa/issues"
+    "url": "https://github.com/khan-rasul/opentaqwa-chrome/issues"
   },
   "type": "module",
   "scripts": {

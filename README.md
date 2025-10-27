@@ -7,55 +7,25 @@
 
 A beautiful Chrome extension that provides Adhan times, Duas, Ayahs and more in an elegant side panel interface.
 
+Website: [opentaqwa.com](opentaqwa.com)
+
 ![OpenTaqwā Screenshot](public/screenshot.png)
 
 ## ✨ Features
 
-- **Live Prayer Times**: Accurate prayer times based on your location using the Aladhan API
-- **Automatic Location Detection**: GPS-based location detection with city/country names
+- **Prayer Times & Notifications**: Get prayer times using the Aladhan API with configurable notifications
+- **Automatic Location Detection**: GPS-based location detection for accurate prayer time calculations
 - **Smart Caching**: Instant loading with localStorage caching for better performance
 - **Beautiful UI**: Modern, responsive design
 - **Islamic Content**:
   - Daily Quranic verses
-  - Asma Ul Husna
-  - Essential Duas
-  - Dhikr collections
-  - Durood/Salawat
+  - Asma Ul Husna Exploration
+  - Dua collections
 - **Side Panel Integration**: Seamless Chrome side panel experience
-- **Offline Support**: Cached data works even when offline
 
 ## 🚀 Installation
 
-### From Chrome Web Store
-
-_[Coming soon - Currently in preview phase]_
-
-### 🔍 Try it Now - Development Preview
-
-**The extension is currently available for preview and testing!**
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/khan-rasul/opentaqwa-chrome.git
-    cd opentaqwa-chrome
-    ```
-2.  **Install dependencies:**
-
-    ```bash
-    npm install
-    ```
-
-3.  **Build the extension:**
-
-    ```bash
-    npm run build
-    ```
-
-4.  **Load in Chrome:**
-
-- Open Chrome and go to chrome://extensions/
-- Enable "Developer mode"
-- Click "Load unpacked" and select the `dist` folder
+**From Chrome Web Store (currently in beta)**: Click [here]("https://chromewebstore.google.com/detail/hbdepdeobpblmikliikpgjdknhojiohc?utm_source=item-share-cb").
 
 ## 🛠️ Development
 
@@ -81,11 +51,17 @@ _[Coming soon - Currently in preview phase]_
    npm run dev
    ```
 
-3. **Build for production:**
+3. **Build extension:**
 
    ```bash
    npm run build
    ```
+
+4. **Load in Chrome:**
+
+   - Open Chrome and go to `chrome://extensions/`
+   - Enable "Developer mode"
+   - Click "Load unpacked" and select the `dist` folder
 
 ### Tech Stack
 
@@ -111,23 +87,23 @@ Contributions are welcome! Here's how you can help:
 - 🐛 Finding and fixing bugs
 - 📱 UI/UX improvements
 - ⚡ Performance optimizations
-<!-- - 📚 Documentation improvements -->
+- ✨ Adding more Features
 
 ## 🙏 Feedback & Support
 
 - Issues: [GitHub Issues](https://github.com/khan-rasul/opentaqwa-chrome/issues)
-- Feature Requests: [GitHub Discussions](https://github.com/khan-rasul/opentaqwa-chrome/discussions)
+- Feature Requests: [File here](https://github.com/khan-rasul/opentaqwa-chrome/issues/new?labels=enhancement)
 - Questions: Feel free to open an issue with the `question` label
 
 ## 📜 License
 
-This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. See the LICENSE file for details.
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. See the [LICENSE](./LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
 - **APIs:** Aladhan, Al Quran Cloud, Reminder.dev, OpenStreetMap Nominatim
 - **Libraries:** React, Tailwind CSS, Lucide React, Axios
-- **AI tools:** Anthropic’s Claude Sonnet 4
+- **AI tools:** Anthropic’s Claude Sonnet
 
 ---
 

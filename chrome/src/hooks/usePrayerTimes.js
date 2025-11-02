@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 import { useState, useEffect } from "react";
-import { aladhanApi } from "../services/aladhanApi";
+import { aladhanApi } from "@opentaqwa/shared";
 
 export const usePrayerTimes = (location, method = 3) => {
   const [prayerTimes, setPrayerTimes] = useState(null);

@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 import { useState, useEffect } from "react";
-import { quranApi } from "../services/quranApi";
+import { quranApi } from "@opentaqwa/shared";
 
 export const useDailyVerse = () => {
   const [verse, setVerse] = useState(null);

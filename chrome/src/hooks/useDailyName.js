@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 import { useState, useEffect } from "react";
-import { asmaUlHusnaApi } from "../services/asmaUlHusnaApi";
+import { asmaUlHusnaApi } from "@opentaqwa/shared";
 import { useCallback } from "react";
 
 export const useDailyName = () => {

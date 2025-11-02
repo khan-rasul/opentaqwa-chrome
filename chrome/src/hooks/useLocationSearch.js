@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 import { useState, useEffect, useCallback } from "react";
-import { geocodingApi } from "../services/geocodingApi";
+import { geocodingApi } from "@opentaqwa/shared";
 import { useDebounce } from "./useDebounce";
 
 export const useLocationSearch = (minQueryLength = 2, debounceDelay = 300) => {

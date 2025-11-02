@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 import { useState, useCallback, useEffect } from "react";
-import { geocodingApi } from "../services/geocodingApi";
+import { geocodingApi } from "@opentaqwa/shared";
 import { useLocation } from "../contexts/LocationContext";
 
 const GPS_TIMEOUT = 7000;

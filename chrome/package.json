@@ -1,5 +1,5 @@
 {
-  "name": "open-taqwa",
+  "name": "chrome",
   "private": true,
   "version": "0.0.3",
   "license": "CC-BY-NC-4.0",
@@ -20,6 +20,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@opentaqwa/shared": "^0.0.1",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
     "lucide-react": "^0.542.0",

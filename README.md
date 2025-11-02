@@ -6,6 +6,13 @@ OpenTaqwa is an Islamic companion application available as both a Chrome extensi
 
 opentaqwa/
 ├── chrome/ # Chrome Extension
+├── shared/ # Shared code between platforms
+│ ├── src/
+│ │ ├── data/ # Static data (dhikr lists, etc.)
+│ │ ├── services/ # API services (Aladhan, Quran, etc.)
+│ │ ├── utils/ # Utility functions
+│ │ └── hooks/ # Shared custom hooks
+│ └── package.json
 ├── README.md
 ├── LICENSE
 ├── TERMS

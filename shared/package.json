@@ -1,0 +1,10 @@
+{
+  "name": "@opentaqwa/shared",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "echo 'shared build placeholder'"
+  }
+}

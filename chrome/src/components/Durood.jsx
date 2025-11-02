@@ -7,10 +7,10 @@
  *
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
-import React, { useState } from "react";
+import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import Tooltip from "./Tooltip";
-import { duroodList } from "../data/duroodList";
+import { duroodList } from "@opentaqwa/shared";
 import { useLanguage } from "../contexts/LanguageContext";
 
 const Durood = () => {

@@ -72,23 +72,3 @@ export const dhikrList = [
     category: "Basmalah",
   },
 ];
-
-// Helper functions
-export const getDhikrById = (id) => {
-  return dhikrList.find((dhikr) => dhikr.id === id);
-};
-
-export const getDhikrsByCategory = (category) => {
-  return dhikrList.filter((dhikr) => dhikr.category === category);
-};
-
-export const getRandomDhikr = () => {
-  const randomIndex = Math.floor(Math.random() * dhikrList.length);
-  return dhikrList[randomIndex];
-};
-
-export const getDhikrCount = () => {
-  return dhikrList.length;
-};
-
-export default dhikrList;

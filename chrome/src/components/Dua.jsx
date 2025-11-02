@@ -10,7 +10,7 @@
 import { useState } from "react";
 import { Heart } from "lucide-react";
 import Tooltip from "./Tooltip";
-import { duaList } from "../data/duaList";
+import { duaList } from "@opentaqwa/shared";
 import { useLanguage } from "../contexts/LanguageContext";
 
 const Dua = () => {

@@ -139,27 +139,3 @@ export const duaList = [
     category: "Knowledge",
   },
 ];
-
-// Helper functions
-export const getDuaById = (id) => {
-  return duaList.find((dua) => dua.id === id);
-};
-
-export const getDuasByCategory = (category) => {
-  return duaList.filter((dua) => dua.category === category);
-};
-
-export const getRandomDua = () => {
-  const randomIndex = Math.floor(Math.random() * duaList.length);
-  return duaList[randomIndex];
-};
-
-export const getDuaCount = () => {
-  return duaList.length;
-};
-
-export const getCategories = () => {
-  return [...new Set(duaList.map((dua) => dua.category))];
-};
-
-export default duaList;

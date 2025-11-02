@@ -47,27 +47,3 @@ export const duroodList = [
     category: "Blessing",
   },
 ];
-
-// Helper functions
-export const getDuroodById = (id) => {
-  return duroodList.find((durood) => durood.id === id);
-};
-
-export const getDuroodsByCategory = (category) => {
-  return duroodList.filter((durood) => durood.category === category);
-};
-
-export const getRandomDurood = () => {
-  const randomIndex = Math.floor(Math.random() * duroodList.length);
-  return duroodList[randomIndex];
-};
-
-export const getDuroodCount = () => {
-  return duroodList.length;
-};
-
-export const getCategories = () => {
-  return [...new Set(duroodList.map((durood) => durood.category))];
-};
-
-export default duroodList;

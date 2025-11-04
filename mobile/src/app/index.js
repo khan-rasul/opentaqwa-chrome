@@ -1,53 +1,74 @@
-import { Link } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
+
+import Header from "../components/Header";
+import Tagline from "../components/Tagline";
+import PrayerTime from "../components/PrayerTime";
+import Verse from "../components/Verse";
+import AsmaUlHusna from "../components/AsmaUlHusna";
+import Footer from "../components/Footer";
+import Card from "../components/Home/Card";
 
 export default function Page() {
-  return (
-    <View className="flex flex-1">
-      <Header />
-      <Content />
-      <Footer />
-    </View>
-  );
-}
+  const insets = useSafeAreaInsets();
 
-function Content() {
   return (
-    <View className="flex-1">
-      <Text className="text-center mt-10 text-lg text-red-500">
-        OpenTaqwa Mobile App
-      </Text>
-    </View>
-  );
-}
-
-function Header() {
-  const { top } = useSafeAreaInsets();
-  return (
-    <View style={{ paddingTop: top }}>
-      <View className="px-4 lg:px-6 h-14 flex items-center flex-row justify-between ">
-        <Link className="font-bold flex-1 items-center justify-center" href="/">
-          OpenTaqwa
-        </Link>
-      </View>
-    </View>
-  );
-}
-
-function Footer() {
-  const { bottom } = useSafeAreaInsets();
-  return (
-    <View
-      className="flex shrink-0 bg-gray-100 native:hidden"
-      style={{ paddingBottom: bottom }}
+    <LinearGradient
+      colors={["rgba(98, 84, 67, 0.1)", "#262626", "#242424"]}
+      start={[0, 0]}
+      end={[0, 1]}
+      style={{ flex: 1, backgroundColor: "#242424" }}
     >
-      <View className="flex-1 items-start px-4 md:px-6 ">
-        <Text className={"text-center text-gray-700"}>
-          © {new Date().getFullYear()} Me
-        </Text>
-      </View>
-    </View>
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ padding: 12, paddingTop: insets.top }}
+      >
+        <View className="flex flex-col gap-3">
+          <Header />
+
+          {/* First row - Dhikr and Durood */}
+          <View className="flex-row gap-3" style={{ height: 80 }}>
+            <View style={{ flex: 8 }}>
+              <Card
+                title="Dhikr"
+                subtitle="Remembrance"
+                route="/dhikr"
+                gradientColors={["#625443", "#625443CC", "#62544333"]}
+              />
+            </View>
+            <View style={{ flex: 10 }}>
+              <Card
+                title="Durūd"
+                subtitle="Blessings"
+                route="/durood"
+                gradientColors={["#263936", "#263936CC", "#26393633"]}
+              />
+            </View>
+          </View>
+
+          {/* Second row - Dua and Tagline */}
+          <View className="flex-row gap-3" style={{ height: 80 }}>
+            <View style={{ flex: 2 }}>
+              <Card
+                title="Du'ā"
+                subtitle="Supplication"
+                route="/dua"
+                gradientColors={["#5E4B56", "#5E4B56CC", "#5E4B5633"]}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Tagline />
+            </View>
+          </View>
+
+          <PrayerTime />
+          <Verse />
+          <AsmaUlHusna />
+          <Footer />
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
